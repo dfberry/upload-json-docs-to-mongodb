@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "myBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "github-graphql/org_repos/{name}",
+      "connection": "JSON_DOCUMENTS_STORAGE"
+    }
+  ],
+  "scriptFile": "../dist/upload/index.js"
+}
