@@ -1,0 +1,20 @@
+{
+  "name": "upload-json-docs-to-mongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "start": "echo \"Monorepo: root doesn't contain an app\" && exit 0",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfberry/upload-json-docs-to-mongodb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dfberry/upload-json-docs-to-mongodb/issues"
+  },
+  "homepage": "https://github.com/dfberry/upload-json-docs-to-mongodb#readme"
+}
