@@ -20,6 +20,11 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         // Get JSON from Buffer
         const jsonDataFromBlob = convertBufferToJson(myBlob);
 
+        // Add date column to data
+        jsonDataFromBlob.map(doc => {
+            doc["customDateUploaded"] = new Date().getUTCDate();
+        })
+
         // insert into mongoDB
         const result = await uploadArrToMongoDb(connectionString, databaseName, collectionName, jsonDataFromBlob);
         
