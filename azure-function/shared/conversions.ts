@@ -1,4 +1,4 @@
-const { StringDecoder } = require('node:string_decoder');
+import { StringDecoder } from 'node:string_decoder';
 
 export function convertBufferToJson(bufferData){
     const decoder = new StringDecoder('utf8');
