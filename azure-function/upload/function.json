@@ -8,5 +8,7 @@
       "connection": "JSON_DOCUMENTS_STORAGE"
     }
   ],
-  "scriptFile": "../dist/upload/index.js"
+  "scriptFile": "../dist/upload/index.js",
+  "disabled": true
 }
+

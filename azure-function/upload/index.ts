@@ -23,6 +23,13 @@ const blobTrigger: AzureFunction = async function (context: Context, myBlob: any
         // insert into mongoDB
         const result = await uploadArrToMongoDb(connectionString, databaseName, collectionName, jsonDataFromBlob);
         
+        const updatedCountDoc = {
+            date: new Date(),
+            count: result?.insertedCount
+        };
+
+        // insert count to mongoDB
+        const result2 = await uploadArrToMongoDb(connectionString, databaseName, collectionName+'-count', [updatedCountDoc]);
         context.log("Blob trigger result `", context.bindingData.name, "` items `", JSON.stringify(result?.insertedCount), "`");
     }
 };
