@@ -2,19 +2,23 @@
   "name": "upload-json-docs-to-mongodb",
   "version": "1.0.0",
   "description": "",
-  "main": "",
   "scripts": {
-    "start": "echo \"Monorepo: root doesn't contain an app\" && exit 0",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\"",
+    "start:azurite": "azurite"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dfberry/upload-json-docs-to-mongodb.git"
+  "dependencies": {
+    "@azure/storage-blob": "^12.12.0",
+    "azurite": "^3.20.1",
+    "mongodb": "^4.12.1"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/dfberry/upload-json-docs-to-mongodb/issues"
-  },
-  "homepage": "https://github.com/dfberry/upload-json-docs-to-mongodb#readme"
+  "devDependencies": {
+    "@azure/functions": "^3.0.0",
+    "@types/mongodb": "^4.0.7",
+    "@types/node": "16.x",
+    "typescript": "^4.0.0"
+  }
 }
