@@ -9,5 +9,5 @@
     "esModuleInterop": true,
     "resolveJsonModule":true
   },
-  "exclude": ["./scripts"]
+  "include": ["./scripts", "./repo", "./upload", "./org"]
 }

@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "clean": "rm -rf ./dist && rm -rf ./azurite",
     "build": "tsc",
+    "build:local": "tsc -p ./tsconfig.local.json",
     "watch": "tsc -w",
     "prestart": "npm run build",
     "start": "func start",
