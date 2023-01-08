@@ -7,7 +7,7 @@ import {
   SortDirection,
   FindOptions,
   Sort,
-  IndexSpecification
+  IndexSpecification,
 } from "mongodb";
 
 export async function uploadArrToMongoDb(
@@ -40,7 +40,8 @@ export async function uploadArrToMongoDb(
     .db(databaseName)
     .collection(collectionName)
     .insertMany(arrData);
-
+  
+  client.close();
   return insertResult;
 }
 
@@ -105,11 +106,11 @@ export async function findRepoInMongoDbWithProjection(
     _id: 0.0,
   };
 
-  const sort:Sort = {
+  const sort: Sort = {
     customDateUploaded: -1,
   };
 
-  var options:FindOptions = {
+  var options: FindOptions = {
     sort,
     projection,
     limit: 100,
@@ -178,4 +179,137 @@ export async function createIndex(
 
   client.close();
   return indexResult;
+}
+export async function deleteIndex(
+  connectionString: string,
+  databaseName: string,
+  collectionName: string,
+  indexName: string
+) {
+  const client = new MongoClient(connectionString);
+  await client.connect();
+
+  const indexResult = await client
+    .db(databaseName)
+    .collection(collectionName)
+    .dropIndex(indexName);
+
+  client.close();
+  return indexResult;
+}
+export async function findOrgReposInMongoDbWithProjection(
+  connectionString: string,
+  databaseName: string,
+  collectionName: string
+): Promise<Array<unknown>> {
+  if (!connectionString) throw new Error("connection string if missing");
+  if (!databaseName) throw new Error("databaseName is missing");
+  if (!collectionName) throw new Error("collectionName is missing");
+
+  const client = new MongoClient(connectionString);
+  await client.connect();
+
+  const dateAfter = await findDateGreaterThan(connectionString, databaseName, collectionName+"-count");
+
+    const query = {
+      customDateUploaded: {$gt: dateAfter}
+    };
+  
+    var projection = {
+      customDateUploaded: 1.0,
+      repositoryName: 1.0,
+  
+      "stargazers.totalCount": 1.0,
+      "forks.totalCount": 1.0,
+      "issues.totalCount": 1.0,
+      "pullRequests.totalCount": 1.0,
+      _id: 0.0,
+    };
+  
+    const sort: Sort = {
+       customDateUploaded: -1
+     };
+  
+    var options: FindOptions = {
+      sort,
+      projection
+    };
+  
+    // // @ts-ignore
+    var docs = await client
+      .db(databaseName)
+      .collection(collectionName)
+      .find(query, options)
+      .toArray();
+  
+    // transform
+    docs.map((doc) => {
+      doc.stars = doc.stargazers.totalCount;
+      doc.forks = doc.forks.totalCount;
+      doc.issues = doc.issues.totalCount;
+      doc.pr = doc.pullRequests.totalCount;
+  
+      delete doc.stargazers;
+      delete doc.pullRequests;
+      delete doc.forks.totalCount;
+      delete doc.issues.totalCount;
+    });
+  
+    docs.sort()
+
+    client.close();
+
+    docs.sort(function (a, b) {
+
+      var nameA = a.repositoryName.toLowerCase(), nameB = b.repositoryName.toLowerCase()
+  
+      if (nameA < nameB)
+        return -1;
+      if (nameA > nameB)
+        return 1;
+      return 0;  // No sorting
+  })
+
+    return docs;
+}
+
+export async function findDateGreaterThan(
+  connectionString: string,
+  databaseName: string,
+  collectionName: string
+): Promise<unknown> {
+  if (!connectionString) throw new Error("connection string if missing");
+  if (!databaseName) throw new Error("databaseName is missing");
+  if (!collectionName) throw new Error("collectionName is missing");
+
+  console.log(`${databaseName}/${collectionName}`);
+
+  const client = new MongoClient(connectionString);
+  await client.connect();
+  const query = {};
+  const sort: Sort = {
+    date: -1,
+  };
+  var projection = {
+    date: 1.0,
+    _id: 0.0
+  };
+  var options: FindOptions = {
+    sort,
+    skip: 1,
+    limit: 1,
+    projection
+  };
+
+
+
+  // @ts-ignore
+  var docs = await client
+    .db(databaseName)
+    .collection(collectionName)
+    .find(query, options)
+    .toArray();
+
+  client.close();
+  return docs[0].date;
 }
