@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
-import { findInMongoDb } from "../shared/azure-cosmosdb-data-to-mongodb";
+import { findRepoInMongoDbWithProjection } from "../shared/azure-cosmosdb-data-to-mongodb";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     context.log('HTTP trigger function processed a request.');
@@ -13,12 +13,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     if(!databaseName) throw new Error("environment AZURE_COSMOSDB_DATABASE_NAME missing ");
     if(!collectionName) throw new Error("environment AZURE_COSMOSDB_COLLECTION_NAME missing ");        
 
-    // insert into mongoDB
-    const findQueryForSpecificRepo = {"repositoryName":repoName};
-    const sortBy = "updatedAt";
-    const sortDirection = -1;
-    const limitBy = 100;
-    const result = await findInMongoDb(connectionString, databaseName, collectionName, findQueryForSpecificRepo, {});
+    const result = await findRepoInMongoDbWithProjection(connectionString, databaseName, collectionName, repoName);
         
     context.res = {
         // status: 200, /* Defaults to 200 */

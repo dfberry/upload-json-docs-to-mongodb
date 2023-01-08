@@ -10,9 +10,11 @@ import { addProperty } from "../shared/json";
 
 import { Values } from "../local.settings.json";
 
+console.log(Values);
+
 const connectionString = Values.AZURE_COSMOSDB_CONNECTION_STRING;
 const databaseName = Values.AZURE_COSMOSDB_DATABASE_NAME;
-const collectionName = process.env.AZURE_COSMOSDB_COLLECTION_NAME;
+const collectionName = Values.AZURE_COSMOSDB_COLLECTION_NAME;
 const storageName = Values.AZURE_STORAGE_NAME;
 const storageKey = Values.AZURE_STORAGE_KEY;
 const storageContainerName = Values.AZURE_STORAGE_CONTAINER_NAME;
@@ -57,6 +59,8 @@ async function processUrl(blobUrl) {
     "customDateUploaded",
     customDateUploaded
   );
+
+  console.log(databaseName + " " + collectionName);
   // insert into mongoDB
   const result = await uploadArrToMongoDb(
     connectionString,
@@ -67,7 +71,7 @@ async function processUrl(blobUrl) {
   console.log(`inserted into Mongo ${result.insertedCount}`);
 
   const updatedCountDoc = {
-    date: new Date(),
+    date: customDateUploaded,
     count: result?.insertedCount,
   };
 
