@@ -313,3 +313,40 @@ export async function findDateGreaterThan(
   client.close();
   return docs[0].date;
 }
+export async function findSummaryInMongoDb(
+  connectionString: string,
+  databaseName: string,
+  collectionName: string,
+): Promise<Array<unknown>> {
+  if (!connectionString) throw new Error("connection string if missing");
+  if (!databaseName) throw new Error("databaseName is missing");
+  if (!collectionName) throw new Error("collectionName is missing");
+
+  const client = new MongoClient(connectionString);
+
+  // Use connect method to connect to the server
+  await client.connect();
+  console.log("Connected successfully to MongoDB");
+
+  const query = {};
+  const sort: Sort = {
+    date: -1,
+  };
+  var projection = {
+    date: 1.0,
+    count:1.0,
+    _id: 0.0
+  };
+  var options: FindOptions = {
+    sort,
+    limit: 100,
+    projection
+  };
+
+  const findResult = await client
+    .db(databaseName)
+    .collection(collectionName)
+    .find(query, options).toArray();
+
+  return findResult;
+}
