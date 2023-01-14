@@ -3,3 +3,4 @@ local.settings.json
 .DS_Store
 node_modules
 azurite
+shared/generated

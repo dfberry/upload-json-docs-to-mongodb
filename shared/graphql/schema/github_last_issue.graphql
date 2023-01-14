@@ -1,0 +1,38 @@
+query GetLastIssueInRepo($owner: String!, $repo: String!)
+{
+  repository(
+    owner: $owner
+    name: $repo
+  ) {
+    issues(last: 1, orderBy: {field: CREATED_AT, direction: DESC}) {
+      edges {
+        node {
+          id
+          title
+          url
+          number
+          state
+          createdAt
+          closedAt
+          participants(first: 10) {
+            edges {
+              node {
+                id
+                login
+                name
+                url
+              }
+            }
+          }
+          labels(first: 5) {
+            edges {
+              node {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
