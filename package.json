@@ -3,15 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "clean": "rm -rf ./dist && rm -rf ./azurite",
+    "clean": "rm -rf ./dist && rm -rf ./azurite && rm -rf ./shared/generated",
     "build": "tsc",
     "build:local": "tsc -p ./tsconfig.local.json",
-    "watch": "tsc -w",
+    "build:sdk": "graphql-codegen --config codegen.yml",
+    "azurite": "azurite --location azurite --debug azurite/debug.log",
     "prestart": "npm run build",
-    "start": "func start",
-    "test": "echo \"No tests yet...\"",
-    "start:azurite": "azurite --location azurite --debug azurite/debug.log",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "start": "func start"
   },
   "dependencies": {
     "@azberry/az-simple": "^0.2.14",

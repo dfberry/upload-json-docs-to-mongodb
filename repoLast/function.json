@@ -9,7 +9,7 @@
         "get",
         "post"
       ], 
-      "route": "lastissue"
+      "route": "last"
     },
     {
       "type": "http",
@@ -17,5 +17,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/lastissue/index.js"
+  "scriptFile": "../dist/repoLast/index.js"
 }

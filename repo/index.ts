@@ -14,7 +14,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     if(!collectionName) throw new Error("environment AZURE_COSMOSDB_COLLECTION_NAME missing ");        
 
     const result = await findRepoInMongoDbWithProjection(connectionString, databaseName, collectionName, repoName);
-        
+
     context.res = {
         // status: 200, /* Defaults to 200 */
         body: result
