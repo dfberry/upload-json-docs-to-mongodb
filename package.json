@@ -6,9 +6,8 @@
     "clean": "rm -rf ./dist && rm -rf ./azurite && rm -rf ./shared/generated",
     "build": "tsc",
     "build:local": "tsc -p ./tsconfig.local.json",
-    "build:sdk": "graphql-codegen --config codegen.yml",
+    "codegen": "graphql-codegen --config codegen.yml",
     "azurite": "azurite --location azurite --debug azurite/debug.log",
-    "prestart": "npm run build:sdk && npm run build",
     "start": "func start"
   },
   "dependencies": {
