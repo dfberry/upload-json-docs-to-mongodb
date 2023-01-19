@@ -17,5 +17,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/repoLast/index.js"
+  "scriptFile": "../dist/last/index.js"
 }
