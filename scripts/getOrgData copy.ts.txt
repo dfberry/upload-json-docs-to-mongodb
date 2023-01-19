@@ -36,7 +36,7 @@ async function main(): Promise<unknown> {
     console.log(dateAfter);
 
     const query = {
-      customDateUploaded: {$gt: dateAfter}
+      customDateUploaded: {$gt: dateAfter},
     };
   
     var projection = {

@@ -18,17 +18,17 @@ if (!collectionName)
 async function main() {
 
 
-  const indexName = "customDateUploaded_-1";
+  const indexName = "repositoryName_1_customDateUploaded_-1";
 
   const createResponse = await deleteIndex(
     connectionString,
     databaseName,
-    collectionName+"-count",
+    collectionName,
     indexName
   );
   console.log(createResponse);
 
-  const list = await getIndexes(connectionString, databaseName, collectionName+"-count");
+  const list = await getIndexes(connectionString, databaseName, collectionName);
   console.log(list);
 }
 main().catch((err) => console.log(err));
