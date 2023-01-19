@@ -8,7 +8,7 @@
     "build:local": "tsc -p ./tsconfig.local.json",
     "build:sdk": "graphql-codegen --config codegen.yml",
     "azurite": "azurite --location azurite --debug azurite/debug.log",
-    "prestart": "npm run build",
+    "prestart": "npm run build:sdk && npm run build",
     "start": "func start"
   },
   "dependencies": {
