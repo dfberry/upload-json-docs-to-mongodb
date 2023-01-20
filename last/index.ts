@@ -38,6 +38,7 @@ const httpTrigger: AzureFunction = async function (
     gitHubOwnerName,
     repo
   );
+  context.log(`default branch for ${gitHubOwnerName}/${repo}: defaultBranch`);
 
   const plastIssue = gitHubLastIssue(
     gitHubUrl,
@@ -59,15 +60,24 @@ const httpTrigger: AzureFunction = async function (
     repo
   );
 
-  const results = await Promise.all([plastIssue, plastCommit, plastPr]);
+  try {
+    const results = await Promise.all([plastIssue, plastCommit, plastPr]);
 
-  context.res = {
-    body: {
-      lastIssue: results[0],
-      lastCommit: results[1],
-      lastPr: results[2],
-    },
-  };
+    context.res = {
+      body: {
+        lastIssue: results[0],
+        lastCommit: results[1],
+        lastPr: results[2],
+      },
+    };
+  } catch (error: any) {
+    context.res = {
+      status: 500 /* Defaults to 200 */,
+      body: {
+        error,
+      },
+    };
+  }
 };
 
 export default httpTrigger;

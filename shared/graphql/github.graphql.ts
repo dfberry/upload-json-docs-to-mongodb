@@ -47,23 +47,28 @@ export async function gitHubLastIssue(
     requestHeaders
   )
 
+  const firstEdge = data?.repository?.issues?.edges[0]?.node;
+  if(!firstEdge) return null;
+
   const remappedData = {
-    title: data.repository.issues.edges[0].node.title,
-    url: data.repository.issues.edges[0].node.url,
-    issueNumber: data.repository.issues.edges[0].node.number,
-    state: data.repository.issues.edges[0].node.state,
-    createdAt: data.repository.issues.edges[0].node.createdAt,
-    closedAt: data.repository.issues.edges[0].node.closedAt,
-    participants: data.repository.issues.edges[0].node.participants.edges.map(
+    title: firstEdge.title,
+    url: firstEdge.url,
+    issueNumber: firstEdge.number,
+    state: firstEdge.state,
+    createdAt: firstEdge.createdAt,
+    closedAt: firstEdge.closedAt,
+    participants: firstEdge?.participants?.edges.map(
       (participant) => {
         return {
-          login: participant.node.login,
-          name: participant.node.name,
-          url: participant.node.url,
+          login: participant?.node?.login,
+          name: participant?.node?.name,
+          url: participant?.node?.url,
         };
       }
     ),
   };
+
+
 
   return remappedData
 }
@@ -103,9 +108,9 @@ export async function gitHubLastCommit(
     requestHeaders
   )
 
-  const remappedData = { ...data.repository.ref.target }
+  if(data?.repository?.ref?.target) return { ...data.repository.ref.target }
 
-  return remappedData
+  return;
 }
 
 export async function gitHubLastPr(
@@ -136,9 +141,9 @@ export async function gitHubLastPr(
     requestHeaders
   )
 
-  const remappedData = { prsByBranch: data.repository?.refs?.nodes }
+  if(data?.repository?.refs?.nodes) return { prsByBranch: data.repository?.refs?.nodes };
 
-  return remappedData
+  return;
 }
 export async function gitHubDefaultBranch(
   githubUrl,
@@ -167,8 +172,7 @@ export async function gitHubDefaultBranch(
     variables,
     requestHeaders
   )
+  if(data?.repository?.defaultBranchRef?.name) return data.repository?.defaultBranchRef?.name;
 
-  const remappedData = data.repository?.defaultBranchRef?.name;
-
-  return remappedData
+  return;
 }
