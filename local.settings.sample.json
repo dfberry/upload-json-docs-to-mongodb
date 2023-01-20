@@ -1,0 +1,21 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "UseDevelopmentStorage":false,
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "JSON_DOCUMENTS_STORAGE": "",
+    "AZURE_COSMOSDB_CONNECTION_STRING":"",
+    "AZURE_COSMOSDB_DATABASE_NAME":"GitHub",
+    "AZURE_COSMOSDB_COLLECTION_NAME":"AggregatedRepos",
+    "AZURE_STORAGE_NAME":"ghstoragedfb",
+    "AZURE_STORAGE_KEY":"",
+    "AZURE_STORAGE_CONTAINER_NAME":"github-graphql",
+    "AZURE_STORAGE_DIRECTORY_NAME":"org_repos",
+    "AzureWebJobs.upload.Disabled": true,
+    "GITHUB_PERSONAL_ACCESS_TOKEN": "",
+    "GITHUB_OWNER": "Azure-samples",
+    "GITHUB_URL": "https://api.github.com/graphql"
+  },
+  
+}
