@@ -4,6 +4,10 @@ import {
   GetLastIssueInRepoQuery,
   GetLastCommitInRepoQueryVariables,
   GetLastCommitInRepoQuery,
+  GetLastPrInRepoQueryVariables,
+  GetLastPrInRepoQuery,
+  GetDefaultBranchInRepoQuery,
+  GetDefaultBranchInRepoQueryVariables,
   Sdk,
   getSdk
 } from '../generated/github_graphql.sdk'
@@ -100,6 +104,71 @@ export async function gitHubLastCommit(
   )
 
   const remappedData = { ...data.repository.ref.target }
+
+  return remappedData
+}
+
+export async function gitHubLastPr(
+  githubUrl,
+  personal_access_token: string,
+  owner: string,
+  repo: string
+): Promise<unknown> {
+  // list of repos
+
+  if (!personal_access_token)
+    throw new Error('gitHubGraphQLReposLastCommit::missing pat')
+
+    const graphQLclient = new GraphQLClient(githubUrl)
+    const sdk: Sdk = getSdk(graphQLclient)
+
+  const variables: GetLastPrInRepoQueryVariables = {
+    owner,
+    repo
+  }
+  const requestHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${personal_access_token}`
+  }
+
+  const data: GetLastPrInRepoQuery = await sdk.GetLastPrInRepo(
+    variables,
+    requestHeaders
+  )
+
+  const remappedData = { prsByBranch: data.repository?.refs?.nodes }
+
+  return remappedData
+}
+export async function gitHubDefaultBranch(
+  githubUrl,
+  personal_access_token: string,
+  owner: string,
+  repo: string
+): Promise<string> {
+  // list of repos
+
+  if (!personal_access_token)
+    throw new Error('gitHubGraphQLReposLastCommit::missing pat')
+
+    const graphQLclient = new GraphQLClient(githubUrl)
+    const sdk: Sdk = getSdk(graphQLclient)
+
+  const variables: GetDefaultBranchInRepoQueryVariables = {
+    owner,
+    repo
+  }
+  const requestHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${personal_access_token}`
+  }
+
+  const data: GetDefaultBranchInRepoQuery = await sdk.GetDefaultBranchInRepo(
+    variables,
+    requestHeaders
+  )
+
+  const remappedData = data.repository?.defaultBranchRef?.name;
 
   return remappedData
 }

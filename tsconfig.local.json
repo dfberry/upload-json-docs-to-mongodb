@@ -9,5 +9,5 @@
     "esModuleInterop": true,
     "resolveJsonModule":true
   },
-  "include": ["./scripts", "./repo", "./upload", "./org"]
+  "include": ["./scripts", "./repo", "./upload", "./org", "./last", "/summary"]
 }

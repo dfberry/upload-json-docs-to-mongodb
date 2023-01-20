@@ -1,0 +1,15 @@
+query GetLastPrInRepo($owner: String!, $repo: String!) { 
+    repository(owner: $owner, name: $repo) {
+      refs(refPrefix: "refs/heads/", last: 1) {
+        nodes {
+          name
+          associatedPullRequests(last: 1, states: [OPEN, CLOSED]) {
+            nodes {
+              number
+              url
+            }
+          }
+        }
+      }
+    }
+  }
