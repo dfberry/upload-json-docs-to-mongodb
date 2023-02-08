@@ -1,25 +1,18 @@
 {
   "name": "upload-json-docs-to-mongodb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "scripts": {
     "clean": "rm -rf ./dist && rm -rf ./azurite && rm -rf ./shared/generated",
     "build": "tsc",
     "build:local": "tsc -p ./tsconfig.local.json",
-    "codegen": "graphql-codegen --config codegen.yml",
     "azurite": "azurite --location azurite --debug azurite/debug.log",
     "start": "func start"
   },
   "dependencies": {
     "@azberry/az-simple": "^0.2.14",
     "@azure/storage-blob": "^12.12.0",
-    "@graphql-codegen/add": "^3.2.3",
-    "@graphql-codegen/cli": "^2.16.4",
-    "@graphql-codegen/introspection": "^2.2.3",
-    "@graphql-codegen/typescript": "^2.8.7",
-    "@graphql-codegen/typescript-graphql-request": "^4.5.8",
-    "@graphql-codegen/typescript-operations": "^2.5.12",
-    "@graphql-codegen/typescript-resolvers": "^2.7.12",
+    "@diberry/github-magic": "^2.2.1",
     "apollo-server-azure-functions": "^3.11.1",
     "azurite": "^3.20.1",
     "graphql": "^16.6.0",

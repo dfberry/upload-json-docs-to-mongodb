@@ -1,23 +1,35 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import {
-  gitHubLastIssue,
-  gitHubLastCommit,
-  gitHubDefaultBranch,
-  gitHubLastPr,
-} from "../shared/graphql/github.graphql";
+  defaultBranch,
+  IGetDefaultBranchInRepoQueryVariables,
+  IGetDefaultBranchInRepoQuery,
+  defaultBranchRequiredParameters,
 
+  lastCommit,
+  lastCommitRequiredParameters,
+  IGetLastCommitInRepoQuery,
+  IGetLastCommitInRepoQueryVariables,
+
+  lastIssue,
+  lastIssueRequiredParameters,
+  IGetLastIssueInRepoQuery,
+
+  lastPrRequiredParameters,
+  lastPr,
+  IGetLastPrInRepoQuery
+} from '@diberry/github-magic';
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<void> {
-  context.log("HTTP trigger function processed a request.");
+  context.log('HTTP trigger function processed a request.');
   const repo = req.query.repo || (req.body && req.body.repo);
   const owner = req.query.owner || (req.body && req.body.owner);
 
   context.log(`repo: ${repo}`);
   context.log(`owner: ${owner}`);
 
-  if (!repo) throw new Error("incoming repo missing ");
+  if (!repo) throw new Error('incoming repo missing ');
 
   const gitHubPersonalAccessToken = process.env.GITHUB_PERSONAL_ACCESS_TOKEN;
   const gitHubOwnerName = owner || process.env.GITHUB_OWNER;
@@ -28,37 +40,54 @@ const httpTrigger: AzureFunction = async function (
   context.log(`gitHubUrl: ${gitHubUrl}`);
 
   if (!gitHubPersonalAccessToken)
-    throw new Error("environment GITHUB_PERSONAL_ACCESS_TOKEN missing ");
-  if (!gitHubOwnerName) throw new Error("owner missing");
-  if (!gitHubUrl) throw new Error("environment GITHUB_URL missing");
+    throw new Error('environment GITHUB_PERSONAL_ACCESS_TOKEN missing ');
+  if (!gitHubOwnerName) throw new Error('owner missing');
+  if (!gitHubUrl) throw new Error('environment GITHUB_URL missing');
 
-  const defaultBranch: string = await gitHubDefaultBranch(
-    gitHubUrl,
-    gitHubPersonalAccessToken,
-    gitHubOwnerName,
-    repo
-  );
+  const defaultBranchResults: IGetDefaultBranchInRepoQuery =
+    await defaultBranch({
+      pat: gitHubPersonalAccessToken,
+      gitHubGraphQlUrl: gitHubUrl,
+      owner: gitHubOwnerName,
+      repo
+    });
   context.log(`default branch for ${gitHubOwnerName}/${repo}: defaultBranch`);
 
-  const plastIssue = gitHubLastIssue(
-    gitHubUrl,
-    gitHubPersonalAccessToken,
-    gitHubOwnerName,
-    repo
-  );
-  const plastCommit = gitHubLastCommit(
-    gitHubUrl,
-    gitHubPersonalAccessToken,
-    gitHubOwnerName,
+  // Last Issue
+  const lastIssueParams:lastIssueRequiredParameters={
+    gitHubGraphQlUrl: gitHubUrl,
+    pat: gitHubPersonalAccessToken,
+    owner: gitHubOwnerName,
     repo,
-    defaultBranch
+    pageSize:1,
+    after: null
+  }
+  const plastIssue = lastIssue(
+    lastIssueParams
   );
-  const plastPr = gitHubLastPr(
-    gitHubUrl,
-    gitHubPersonalAccessToken,
-    gitHubOwnerName,
+
+  // Last Commit
+  const branchName:string = defaultBranchResults.repository.defaultBranchRef.name;
+  const lastCommitParams:lastCommitRequiredParameters={
+    gitHubGraphQlUrl: gitHubUrl,
+    pat: gitHubPersonalAccessToken,
+    owner: gitHubOwnerName,
+    repo,
+    branch: branchName
+  }
+  const plastCommit = lastCommit(
+    lastCommitParams
+  );
+
+
+  // Last PR
+  const lastPrParams: lastPrRequiredParameters={
+    gitHubGraphQlUrl: gitHubUrl,
+    pat: gitHubPersonalAccessToken,
+    owner: gitHubOwnerName,
     repo
-  );
+  }
+  const plastPr = lastPr(lastPrParams);
 
   try {
     const results = await Promise.all([plastIssue, plastCommit, plastPr]);
@@ -67,15 +96,15 @@ const httpTrigger: AzureFunction = async function (
       body: {
         lastIssue: results[0],
         lastCommit: results[1],
-        lastPr: results[2],
-      },
+        lastPr: results[2]
+      }
     };
   } catch (error: any) {
     context.res = {
       status: 500 /* Defaults to 200 */,
       body: {
-        error,
-      },
+        error
+      }
     };
   }
 };

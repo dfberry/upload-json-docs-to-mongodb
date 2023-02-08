@@ -1,3 +1,11 @@
+# 1.0.1
+
+* Add `.prettierrc`
+* Update `/org` to return more extended repo properties
+* Switch out GraphQL for @diberry/github-magic
+
+# 0.0.0
+
 * sorting
 
     * An index must match exactly the field being sorted on. The direction of the index is not relevant. Here your initial index was a composite index on three fields so could not be used for the sort.
