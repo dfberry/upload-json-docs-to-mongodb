@@ -44,6 +44,8 @@ const httpTrigger: AzureFunction = async function (
   if (!gitHubOwnerName) throw new Error('owner missing');
   if (!gitHubUrl) throw new Error('environment GITHUB_URL missing');
 
+
+  // Default branch
   const defaultBranchResults: IGetDefaultBranchInRepoQuery =
     await defaultBranch({
       pat: gitHubPersonalAccessToken,
@@ -51,7 +53,8 @@ const httpTrigger: AzureFunction = async function (
       owner: gitHubOwnerName,
       repo
     });
-  context.log(`default branch for ${gitHubOwnerName}/${repo}: defaultBranch`);
+  const defaultBranchName = defaultBranchResults.repository.defaultBranchRef.name
+  context.log(`default branch for ${gitHubOwnerName}/${repo}: ${defaultBranchName}`);
 
   // Last Issue
   const lastIssueParams:lastIssueRequiredParameters={
@@ -94,9 +97,11 @@ const httpTrigger: AzureFunction = async function (
 
     context.res = {
       body: {
-        lastIssue: results[0],
-        lastCommit: results[1],
-        lastPr: results[2]
+        defaultBranch:defaultBranchName,
+        lastIssue: results[0]?.repository?.issues?.edges[0]?.node,
+        lastCommit: results[1]?.repository?.ref?.target,
+        lastPr: results[2]?.repository?.refs?.nodes[0],
+        
       }
     };
   } catch (error: any) {
