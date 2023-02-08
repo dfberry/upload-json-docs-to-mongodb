@@ -1,3 +1,11 @@
+# 1.0.2
+
+* Return empty object instead of no object at all 
+* /api/status - returns version from package.json
+* error handling for 500
+    * post error to Azure Functions context log
+    * returns full error to requestor
+
 # 1.0.1
 
 * Add `.prettierrc`

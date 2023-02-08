@@ -2,7 +2,10 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 import { findOrgReposInMongoDbWithProjection } from "../shared/azure-cosmosdb-data-to-mongodb";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    context.log('HTTP trigger function processed a request.');
+
+    try{
+
+    context.log('HTTP trigger org function processed a request.');
 
     const name = (req.query.name || (req.body && req.body.name));
 
@@ -21,6 +24,13 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         // status: 200, /* Defaults to 200 */
         body: list
     };
+} catch (error: any) {
+    context.log(error);
+  context.res = {
+    status: 500 /* Defaults to 200 */,
+    body: error
+  };
+}
 
 };
 
