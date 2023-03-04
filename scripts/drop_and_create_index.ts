@@ -1,3 +1,4 @@
+import { IndexSpecification } from "mongodb";
 import {
   deleteIndex,
   getIndexes,

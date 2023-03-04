@@ -24,7 +24,6 @@ export type BuildDispatchParams = {
   owner: string;
   repo: string;
   action: string;
-  displayName: string;
 } & EnvironmentVariables &
   ContextFunctions;
 
@@ -46,7 +45,6 @@ export async function dispatchAction(
   if (!vars.owner) throw Error('owner is missing');
   if (!vars.repo) throw Error('repo is missing');
   if (!vars.action) throw Error('action is missing');
-  if (!vars.displayName) throw Error('displayName is missing');
   if (!vars.pat) throw Error('pat is missing');
   if (!vars.dbConnectionString) throw Error('dbConnectionString is missing');
   if (!vars.databaseName) throw Error('databaseName is missing');

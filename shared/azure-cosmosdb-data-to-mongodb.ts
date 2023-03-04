@@ -167,7 +167,7 @@ export async function createIndex(
   connectionString: string,
   databaseName: string,
   collectionName: string,
-  indexDefination: IndexSpecification
+  indexDefinition: IndexSpecification
 ) {
   const client = new MongoClient(connectionString);
   await client.connect();
@@ -175,7 +175,7 @@ export async function createIndex(
   const indexResult = await client
     .db(databaseName)
     .collection(collectionName)
-    .createIndex(indexDefination);
+    .createIndex(indexDefinition);
 
   client.close();
   return indexResult;
