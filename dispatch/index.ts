@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import { dispatchAction } from '../shared/github';
+import { triggerDispatch } from '../shared/github';
 
 
 const httpTrigger: AzureFunction = async function (
@@ -11,36 +11,21 @@ const httpTrigger: AzureFunction = async function (
 
     const owner = req.query.owner || (req.body && req.body.owner);
     const repo = req.query.repo || (req.body && req.body.repo);
-    const action = req.query.action || (req.body && req.body.action);
+    const type = req.query.type || (req.body && req.body.type);
 
     if (!owner) throw Error('owner is missing');
     if (!repo) throw Error('repo is missing');
-    if (!action) throw Error('action is missing');
+    if (!type) throw Error('type is missing');
 
     const pat = process.env.GITHUB_PERSONAL_ACCESS_TOKEN_DISPATCH;
-    const dbConnectionString = process.env.AZURE_COSMOSDB_CONNECTION_STRING;
-    const databaseName = process.env.AZURE_COSMOSDB_DATABASE_NAME;
-    const collectionName =
-      process.env.AZURE_COSMOSDB_COLLECTION_CONFIG_SETTINGS_NAME;
-    const partitionKey =
-      process.env.AZURE_COSMOSDB_COLLECTION_CONFIG_SETTINGS_PARTITION_KEY;
-
     if (!pat) throw Error('pat is missing');
-    if (!dbConnectionString) throw Error('dbConnectionString is missing');
-    if (!databaseName) throw Error('databaseName is missing');
-    if (!collectionName) throw Error('collectionName is missing');
-    if (!partitionKey) throw Error('partitionKey is missing');
 
-    const {statusCode} = await dispatchAction({
-      dispatchType:null,
+
+    const {statusCode} = await triggerDispatch({
+      type,
       owner,
       repo,
-      action,
       pat,
-      dbConnectionString,
-      databaseName,
-      collectionName,
-      partitionKey,
       log:context.log
     })
 

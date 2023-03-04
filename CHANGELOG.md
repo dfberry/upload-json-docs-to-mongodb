@@ -1,3 +1,9 @@
+# 1.1.0
+
+* dispatch API trigger's GitHub repo's action based on type
+    * 'http://localhost:7071/api/dispatch?owner=dfberry&repo=actions-test&type=data-is-ready'
+    * [Docs](./README.md#dispatch-api)
+
 # 1.0.2
 
 * Return empty object instead of no object at all 
