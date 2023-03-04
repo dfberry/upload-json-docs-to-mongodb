@@ -1,25 +1,5 @@
 import fetch from 'node-fetch';
 
-export type EnvironmentVariables = {
-  pat: string;
-  dbConnectionString: string;
-  databaseName: string;
-  collectionName: string;
-  partitionKey: string;
-};
-
-export type ContextFunctions = {
-  log: any;
-};
-
-export type BuildDispatchParams = {
-  dispatchType?: string;
-  owner: string;
-  repo: string;
-  action: string;
-} & EnvironmentVariables &
-  ContextFunctions;
-
 export type TriggerDispatchParams = {
   type: string;
   owner: string;
@@ -28,7 +8,7 @@ export type TriggerDispatchParams = {
   log: any;
 };
 
-export type DispatchActionResult = {
+export type TriggerDispatchResult = {
   statusCode: number;
 };
 
@@ -38,7 +18,7 @@ export async function triggerDispatch({
   repo,
   pat,
   log
-}: TriggerDispatchParams) {
+}: TriggerDispatchParams):Promise<TriggerDispatchResult> {
   if (!type) throw Error('dispatchType is missing');
   if (!owner) throw Error('owner is missing');
   if (!repo) throw Error('repo is missing');
