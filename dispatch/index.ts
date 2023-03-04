@@ -36,7 +36,6 @@ const httpTrigger: AzureFunction = async function (
       owner,
       repo,
       action,
-      displayName:null,
       pat,
       dbConnectionString,
       databaseName,
