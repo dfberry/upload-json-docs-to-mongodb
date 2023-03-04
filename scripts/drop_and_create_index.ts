@@ -32,7 +32,7 @@ async function main() {
   const list = await getIndexes(connectionString, databaseName, collectionName);
   console.log(list);
 
-  const indexSpec: IndexSpecification = {
+  const indexSpec = {
     customDateUploaded: -1,
     repositoryName: 1
     

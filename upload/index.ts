@@ -1,6 +1,7 @@
 import { AzureFunction, Context } from '@azure/functions';
 import { convertBufferToJson } from '../shared/conversions';
 import { uploadArrToMongoDb } from '../shared/azure-cosmosdb-data-to-mongodb';
+import { triggerDispatch } from '../shared/github';
 
 const blobTrigger: AzureFunction = async function (
   context: Context,
@@ -65,9 +66,19 @@ const blobTrigger: AzureFunction = async function (
         JSON.stringify(result?.insertedCount),
         '`'
       );
+
+      // trigger rebuild of next.js web site
+      // TBD: extrapolate params out - to key vault secret as entire JSON object
+      // await triggerDispatch({
+      //   dispatchType: 'data-is-ready',
+      //   owner: 'dfberry',
+      //   repo: 'github-data-dashboard-nextjs',
+      //   pat: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
+      //   log: context.log
+      // });
     }
   } catch (error: any) {
-      context.log(error);
+    context.log(error);
     context.res = {
       status: 500 /* Defaults to 200 */,
       body: error

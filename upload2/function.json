@@ -1,0 +1,14 @@
+{
+  "bindings": [
+    {
+      "name": "upload2",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "%AZURE_STORAGE_CONTAINER_NAME_USER_REPOS%/{name}",
+      "connection": "JSON_DOCUMENTS_STORAGE"
+    }
+  ],
+  "scriptFile": "../dist/upload2/index.js",
+  "disabled": true
+}
+

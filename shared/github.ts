@@ -43,15 +43,15 @@ export type DispatchActionResult = {
 export async function dispatchAction(
   vars: BuildDispatchParams
 ): Promise<DispatchActionResult> {
-  // if (!vars.owner) throw Error('owner is missing');
-  // if (!vars.repo) throw Error('repo is missing');
-  // if (!vars.action) throw Error('action is missing');
-  // if (!vars.displayName) throw Error('displayName is missing');
-  // if (!vars.pat) throw Error('pat is missing');
-  // if (!vars.dbConnectionString) throw Error('dbConnectionString is missing');
-  // if (!vars.databaseName) throw Error('databaseName is missing');
-  // if (!vars.collectionName) throw Error('collectionName is missing');
-  // if (!vars.partitionKey) throw Error('partitionKey is missing');
+  if (!vars.owner) throw Error('owner is missing');
+  if (!vars.repo) throw Error('repo is missing');
+  if (!vars.action) throw Error('action is missing');
+  if (!vars.displayName) throw Error('displayName is missing');
+  if (!vars.pat) throw Error('pat is missing');
+  if (!vars.dbConnectionString) throw Error('dbConnectionString is missing');
+  if (!vars.databaseName) throw Error('databaseName is missing');
+  if (!vars.collectionName) throw Error('collectionName is missing');
+  if (!vars.partitionKey) throw Error('partitionKey is missing');
 
   const query = {
     [vars.partitionKey]: { $eq: `${vars.owner}/${vars.repo}` },
@@ -74,8 +74,6 @@ export async function dispatchAction(
 
   const { dispatchType } = configSetting?.[0] as DbConfigSetting;
 
-  // Scenario: trigger rebuild of next.js web site
-  // TBD: extrapolate params out to encrypted storage (Key vault or Azure Storage)
   const { statusCode } = await triggerDispatch({
     dispatchType, //'data-is-ready',
     owner: vars.owner,
@@ -94,7 +92,6 @@ export async function triggerDispatch({
   pat,
   log
 }: TriggerDispatchParams) {
-
   if (!dispatchType) throw Error('dispatchType is missing');
   if (!owner) throw Error('owner is missing');
   if (!repo) throw Error('repo is missing');
@@ -107,10 +104,10 @@ export async function triggerDispatch({
     method: 'POST',
     headers: {
       Accept: 'application/vnd.github+json',
-      Authorization:`token ${pat}`
+      Authorization: `token ${pat}`
     },
     body: JSON.stringify({
-      "event_type": dispatchType
+      event_type: dispatchType
     })
   };
 
