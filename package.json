@@ -1,6 +1,6 @@
 {
   "name": "upload-json-docs-to-mongodb",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "",
   "scripts": {
     "clean": "rm -rf ./dist && rm -rf ./azurite && rm -rf ./shared/generated",
@@ -17,7 +17,8 @@
     "azurite": "^3.20.1",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
-    "mongodb": "^4.12.1"
+    "mongodb": "^4.12.1",
+    "node-fetch": "^2.6.9"
   },
   "devDependencies": {
     "@azure/functions": "^3.0.0",
