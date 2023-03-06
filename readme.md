@@ -26,7 +26,15 @@ DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02
 
 ### dispatch API
 
-Invoke a GitHub action by its named `repository_dispatch` property's `types` value. Uses the `GITHUB_PERSONAL_ACCESS_TOKEN_DISPATCH` environment variables as the GitHub pat with REPO permission. 
+Invoke a GitHub action by its named `repository_dispatch` property's `types` value. Uses the `GITHUB_PERSONAL_ACCESS_TOKEN_DISPATCH` environment variables as the GitHub pat with REPO permission. Uses the `GITHUB_ACTION_DISPATCH_CONFIG_BLOB_DATA` environment variables as the dispatch information.
+
+1. Configure environment variables:
+
+
+    ```
+    GITHUB_PERSONAL_ACCESS_TOKEN_DISPATCH=ghp_8T2...
+    GITHUB_ACTION_DISPATCH_CONFIG_BLOB_DATA="{\"type\":\"data-is-ready\",\"owner\":\"dfberry\",\"repo\":\"github-data-dashboard-nextjs\",\"pat\":\"ghp_8T2...\"}"
+    ```
 
 1. Goal is to match this function's `dispatch` API to invoke _some_ repository action. The action yaml file must have a `types` value that matches the `type` in the query-string.
 
@@ -37,13 +45,13 @@ on:
       - data-is-ready
 ```
 
-2. Example `dispatch` API call with cURL.
+1. Example `dispatch` API call with cURL.
 
 ```bash
 curl --location 'http://localhost:7071/api/dispatch?owner=dfberry&repo=actions-test&type=data-is-ready'
 ```
 
-3. Must resolve to correct GitHub REST call to create a [repository dispatch event](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event). With caveats:
+1 Must resolve to correct GitHub REST call to create a [repository dispatch event](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event). With caveats:
 
 * `Authorization: token <YOUR-PAT>` - didn't use bearer token
 * Didn't need version - but may in the future

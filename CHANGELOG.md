@@ -1,3 +1,15 @@
+# 1.2.0
+
+* Refactor upload to include triggering a GitHub action by its dispatch type. Used to rebuild the [Next.js app](https://github.com/dfberry/github-data-dashboard-nextjs/actions). 
+* Add Jest
+    * Need tests but not convinced these are the right tests
+    * Jest isn't doing much at this point
+* Changes Upload input binding to pull container path information from runtime environment variables with `%` syntax. This allows the upload function to be configurable from the environment settings. 
+    ```
+          "path": "%AZURE_STORAGE_CONTAINER_NAME%/%AZURE_STORAGE_DIRECTORY_NAME%/{name}",
+    ```
+    * TBD: this still makes the function single purpose/use b/c their is only 1 set of environment variables. How do make upload more generic at the environment setting level so other blob upload systems can be service such as my user data (diberry) instead of org (azure-samples)? 
+
 # 1.1.0
 
 * dispatch API trigger's GitHub repo's action based on type

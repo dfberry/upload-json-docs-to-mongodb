@@ -1,6 +1,7 @@
+import { BlobFunctionContent } from './../shared/integration';
 import { AzureFunction, Context } from '@azure/functions';
 import { convertBufferToJson } from '../shared/conversions';
-import { uploadArrToMongoDb } from '../shared/azure-cosmosdb-data-to-mongodb';
+import { processBlob, DispatchConfig, DbConfig } from '../shared/integration';
 
 const blobTrigger: AzureFunction = async function (
   context: Context,
@@ -8,7 +9,7 @@ const blobTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     context.log(
-      'Blob trigger upload function processed blob \n Name:',
+      'Blob trigger begin - upload function processed blob \n Name:',
       context.bindingData.name,
       '\n Blob Size:',
       myBlob.length,
@@ -33,41 +34,29 @@ const blobTrigger: AzureFunction = async function (
       // Get JSON from Buffer
       const jsonDataFromBlob = convertBufferToJson(myBlob);
 
-      // Add date column to data
-      jsonDataFromBlob.map((doc) => {
-        doc['customDateUploaded'] = new Date();
-      });
-
-      // insert into mongoDB
-      const result = await uploadArrToMongoDb(
-        connectionString,
-        databaseName,
-        collectionName,
-        jsonDataFromBlob
+      const dispatchConfig: DispatchConfig = JSON.parse(
+        process.env.GITHUB_ACTION_DISPATCH_CONFIG_BLOB_DATA
       );
 
-      const updatedCountDoc = {
-        date: new Date(),
-        count: result?.insertedCount
+      const blobFunctionContent: BlobFunctionContent = {
+        blobName: context.bindingData.name,
+        data: jsonDataFromBlob,
+        log: context.log
       };
-
-      // insert count to mongoDB
-      const result2 = await uploadArrToMongoDb(
+      const dbConfig: DbConfig = {
         connectionString,
         databaseName,
-        collectionName + '-count',
-        [updatedCountDoc]
-      );
-      context.log(
-        'Blob trigger result `',
-        context.bindingData.name,
-        '` items `',
-        JSON.stringify(result?.insertedCount),
-        '`'
-      );
+        collectionName
+      };
+      const { statusCode } = await processBlob({
+        ...dispatchConfig,
+        ...blobFunctionContent,
+        ...dbConfig
+      });
+      context.log(`Blob trigger end = GitHub action dispatch result: ${statusCode}`);
     }
   } catch (error: any) {
-      context.log(error);
+    context.log(error);
     context.res = {
       status: 500 /* Defaults to 200 */,
       body: error

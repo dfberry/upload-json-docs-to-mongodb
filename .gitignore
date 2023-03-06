@@ -4,3 +4,4 @@ local.settings.json
 node_modules
 azurite
 shared/generated
+coverage

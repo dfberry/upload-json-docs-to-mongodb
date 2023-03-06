@@ -4,7 +4,7 @@
       "name": "myBlob",
       "type": "blobTrigger",
       "direction": "in",
-      "path": "github-graphql/org_repos/{name}",
+      "path": "%AZURE_STORAGE_CONTAINER_NAME%/%AZURE_STORAGE_DIRECTORY_NAME%/{name}",
       "connection": "JSON_DOCUMENTS_STORAGE"
     }
   ],

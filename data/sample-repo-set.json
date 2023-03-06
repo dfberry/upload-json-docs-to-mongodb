@@ -1,0 +1,114 @@
+[
+    {
+      "id": "MDEwOlJlcG9zaXRvcnkxMzExNDU2OTc=",
+      "url": "https://github.com/Azure-Samples/cognitive-services-speech-sdk",
+      "descriptionHTML": "<div>Sample code for the Microsoft Cognitive Services Speech SDK</div>",
+      "updatedAt": "2023-02-06T17:06:16Z",
+      "diskUsage": 233518,
+      "repositoryName": "cognitive-services-speech-sdk",
+      "languages": ["Makefile", "C++", "C#", "C", "Shell"],
+      "legal": { "license": "MIT License" },
+      "is": {
+        "isArchived": false,
+        "isEmpty": false,
+        "isPrivate": false,
+        "isTemplate": false,
+        "isSecurityPolicyEnabled": false,
+        "isDisabled": false
+      },
+      "has": { "hasWikiEnabled": true },
+      "date": {
+        "createdAt": "2018-04-26T11:28:25Z",
+        "updatedAt": "2023-02-06T17:06:16Z",
+        "pushedAt": "2023-02-06T23:50:41Z"
+      },
+      "watchers": { "totalCount": 101 },
+      "stargazers": { "totalCount": 1501 },
+      "forks": { "totalCount": 1391 },
+      "issues": { "totalCount": 32 },
+      "pullRequests": { "totalCount": 24 },
+      "openPrs": { "totalCount": 24 },
+      "lastPr": {
+        "title": "Fix doc tag for LID Java sample",
+        "isDraft": false,
+        "url": "https://github.com/Azure-Samples/cognitive-services-speech-sdk/pull/1824",
+        "state": "MERGED",
+        "number": 1824,
+        "mergedAt": "2023-02-06T20:48:09Z",
+        "closedAt": "2023-02-06T20:48:09Z",
+        "createdAt": "2023-02-06T17:06:39Z"
+      },
+      "lastIssue": {
+        "id": "I_kwDOB9Ef4c5dZ1vT",
+        "title": "Speech recognition fails on Linux with SPXERR_AUDIO_SYS_LIBRARY_NOT_FOUND",
+        "url": "https://github.com/Azure-Samples/cognitive-services-speech-sdk/issues/1820",
+        "number": 1820,
+        "state": "OPEN",
+        "createdAt": "OPEN",
+        "closedAt": null,
+        "lastEditedAt": null
+      },
+      "lastPushToDefaultBranch": {
+        "name": "master",
+        "message": "Updating sample code to use latest API versions (#1811)\n\nUpdated Speech REST API version to 3.1 and ConvesationAnalysis API version to 2022-10-01-preview.\r\n\r\nCo-authored-by: BrianMouncer <48774897+BrianMouncer@users.noreply.github.com>",
+        "pushedDate": "2023-02-06T23:50:45Z",
+        "committedDate": "2023-02-06T23:50:41Z"
+      }
+    },
+    {
+      "id": "MDEwOlJlcG9zaXRvcnkxMzEwMjY3OTQ=",
+      "url": "https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2",
+      "descriptionHTML": "<div>An ASP.NET Core Web App which lets sign-in users (including in your org, many orgs, orgs + personal accounts, sovereign clouds) and call Web APIs (including Microsoft Graph)</div>",
+      "updatedAt": "2023-02-05T17:31:40Z",
+      "diskUsage": 11694,
+      "repositoryName": "active-directory-aspnetcore-webapp-openidconnect-v2",
+      "languages": ["C#", "CSS", "JavaScript", "HTML", "PowerShell"],
+      "legal": { "license": "MIT License" },
+      "is": {
+        "isArchived": false,
+        "isEmpty": false,
+        "isPrivate": false,
+        "isTemplate": false,
+        "isSecurityPolicyEnabled": false,
+        "isDisabled": false
+      },
+      "has": { "hasWikiEnabled": true },
+      "date": {
+        "createdAt": "2018-04-25T15:26:43Z",
+        "updatedAt": "2023-02-05T17:31:40Z",
+        "pushedAt": "2023-02-03T10:59:38Z"
+      },
+      "watchers": { "totalCount": 109 },
+      "stargazers": { "totalCount": 1142 },
+      "forks": { "totalCount": 850 },
+      "issues": { "totalCount": 10 },
+      "pullRequests": { "totalCount": 7 },
+      "openPrs": { "totalCount": 7 },
+      "lastPr": {
+        "title": "Routine sample update",
+        "isDraft": false,
+        "url": "https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/pull/666",
+        "state": "OPEN",
+        "number": 666,
+        "mergedAt": null,
+        "closedAt": null,
+        "createdAt": "2023-02-03T10:59:37Z"
+      },
+      "lastIssue": {
+        "id": "I_kwDOB89Pas5bjqlA",
+        "title": "OAuth2 Authorization code was already redeemed please retry with a new valid code or use an existing refresh token",
+        "url": "https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/issues/664",
+        "number": 664,
+        "state": "OPEN",
+        "createdAt": "OPEN",
+        "closedAt": null,
+        "lastEditedAt": "2023-01-17T23:18:35Z"
+      },
+      "lastPushToDefaultBranch": {
+        "name": "master",
+        "message": "Aremo ms/sample4 3 basher (#656)\n\n* slightly updated sample.json to meet new code generator format + enabled tenant validation in startup\r\n\r\n* working on BASHER\r\n\r\n* added allowed tenants list to appsettings.json\r\n\r\n* added PS items to solution\r\n\r\n* updated readme for validation of tenants\r\n\r\n* reverted sample.json\r\n\r\n* addressed review comments\r\n\r\n* slight update in readme.md\r\n\r\n* added client capabilities\r\n\r\n* Minor edits\r\n\r\n* More edits\r\n\r\n* addressed comments\r\n\r\n* Updated readme and Service/TodoListController.cs to have new scopes Read.User.Data and Write.User.Data\r\n\r\n* updated sample.json with Audience and manual steps for Service application\r\n\r\n* updated PowerShell scripts\r\n\r\n* reverted to back compatible URL names in sample.json + cleanup\r\n\r\n* latest packages (.NET 7.0), cleanup and config are from latest CodeGen. Added readme_steps for easer compare (will delete before release). Current status: todo list fails to display\r\n\r\n* bumped versions packages\r\n\r\n* ps files are generated by latest code gen, updated scope and permissions to latest trend. Appsettings.json was updated to keep graph info. Sample.json was updated to have latest code jen fileds (still need to be updated)\r\n\r\n* removed graph client creation and getting token. The client is obtained from middleware now\r\n\r\n* Setting some fundamentals stuff right ahead\r\n\r\n* BASHER logic and permissions, some cleanup as well\r\n\r\n* re-added reply url for service, renamed name of app registration to have \"_\" instead of \"-\"\r\n\r\n* readme file with initial \"How the code was created\" and updated \"About the code\", other sub-readme files\r\n\r\n* bumped all versions\r\n\r\n* fixing mismatch between readme and manual steps\r\n\r\n* updated readme\r\n\r\n* renamed AppId and Scope for Web API\r\n\r\n* formatting and textual edits\r\n\r\n* addressed comments\r\n\r\n* last update\r\n\r\n* updated\r\n\r\nCo-authored-by: Kalyan Krishna <kkrishna@microsoft.com>\r\nCo-authored-by: kalyankrishna1 <kalyankrishna1@gmail.com>",
+        "pushedDate": "2022-12-19T21:16:23Z",
+        "committedDate": "2022-12-19T21:16:21Z"
+      }
+    }
+]
