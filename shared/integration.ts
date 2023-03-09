@@ -1,5 +1,8 @@
 import { uploadArrToMongoDb } from './azure-cosmosdb-data-to-mongodb';
 import { triggerDispatch } from './github';
+import {
+  getBlobAsJson,
+} from "../shared/azure-storage";
 
 export type BlobFunctionContent = {
   blobName: string;
@@ -25,6 +28,46 @@ export type ProcessBlobResult = {
   statusCode: number;
   statusMessage?: string;
 };
+export async function processBlobUrl({
+  blobUrl,
+  connectionString,
+  databaseName,
+  collectionName,
+  storageName, 
+  storageKey, 
+  log
+}): Promise<any> {
+  if (!blobUrl) {
+    throw new Error('Missing blobUrl or data');
+  }
+  if (!connectionString || !databaseName || !collectionName) {
+    throw new Error('Missing connectionString, databaseName or collectionName');
+  }
+  if (!log) {
+    throw new Error('Missing log function');
+  }
+
+  const blobContents = await getBlobAsJson(storageName, storageKey, blobUrl);
+
+  if(blobContents.error) throw Error(blobContents?.error as string)
+  if((blobContents.json as []).length === 0) throw Error("blobContents.json.length === 0")
+  const data: any[] = blobContents.json as any[];
+
+  const blobName = blobUrl.split('/').pop();
+
+  const result = await processBlob({
+    blobName,
+    data,
+    connectionString,
+    databaseName,
+    collectionName,
+    type:null,
+    owner:null,
+    repo:null,
+    pat:null,
+    log
+  })
+}
 
 export async function processBlob({
   blobName,
