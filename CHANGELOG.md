@@ -1,4 +1,8 @@
-# 1.30
+# 1.3.1
+
+* /statue - returns env, http headers too
+
+# 1.3.0
 
 * POST /insert - process blob image by blob url, databaseName, collectionName
 * revert dispatch now
