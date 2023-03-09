@@ -1,3 +1,8 @@
+# 1.30
+
+* POST /insert - process blob image by blob url, databaseName, collectionName
+* revert dispatch now
+
 # 1.2.0
 
 * Refactor upload to include triggering a GitHub action by its dispatch type. Used to rebuild the [Next.js app](https://github.com/dfberry/github-data-dashboard-nextjs/actions). 
