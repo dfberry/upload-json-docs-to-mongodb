@@ -2,10 +2,12 @@ import { uploadArrToMongoDb } from './azure-cosmosdb-data-to-mongodb';
 import { triggerDispatch } from './github';
 import {
   getBlobAsJson,
+  getBlobProperties,
 } from "../shared/azure-storage";
 
 export type BlobFunctionContent = {
   blobName: string;
+  dateCreated: string;
   data: any[];
   log: (message: string) => void;
 };
@@ -52,12 +54,15 @@ export async function processBlobUrl({
   if(blobContents.error) throw Error(blobContents?.error as string)
   if((blobContents.json as []).length === 0) throw Error("blobContents.json.length === 0")
   const data: any[] = blobContents.json as any[];
+  const properties = await getBlobProperties(storageName, storageKey, blobUrl);
+  const dateCreated = properties?.system?.createdOn as string;
 
   const blobName = blobUrl.split('/').pop();
 
   const result = await processBlob({
     blobName,
     data,
+    dateCreated,
     connectionString,
     databaseName,
     collectionName,
@@ -67,11 +72,13 @@ export async function processBlobUrl({
     pat:null,
     log
   })
+  return result;
 }
 
 export async function processBlob({
   blobName,
   data,
+  dateCreated,
   connectionString,
   databaseName,
   collectionName,
@@ -97,12 +104,9 @@ export async function processBlob({
     };
   }
 
-  // Add date column to data
-  const newDate = new Date().toISOString();
-
   data.map((doc) => {
     // @ts-ignore
-    doc['customDateUploaded'] = newDate;
+    doc['customDateUploaded'] = dateCreated;
   });
 
   // insert into mongoDB
@@ -114,7 +118,7 @@ export async function processBlob({
   );
 
   const updatedCountDoc = {
-    date: new Date(),
+    date: dateCreated,
     count: result?.insertedCount
   };
 
@@ -143,4 +147,5 @@ export async function processBlob({
     });
     return { statusCode };
   }
+  return { statusCode: 201}
 }

@@ -53,7 +53,8 @@ describe('integrations', () => {
       data: [{"id":1,"email":"bgontier0@latimes.com"},
       {"id":2,"email":"ahattoe1@nationalgeographic.com"},
       {"id":3,"email":"mmaud2@psu.edu"}],
-      log: (message: string) => {}
+      log: (message: string) => {},
+      dateCreated: "2023-03-09T13:26:14+00:00"
     };
 
     const processBlobParams: ProcessBlobParams = {

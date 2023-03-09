@@ -13,7 +13,9 @@ const blobTrigger: AzureFunction = async function (
       context.bindingData.name,
       '\n Blob Size:',
       myBlob.length,
-      'Bytes'
+      'Bytes',
+      "created on",
+      context.bindingData.properties.createdOn
     );
 
     // Send JSON data to MongoDB
@@ -48,6 +50,7 @@ const blobTrigger: AzureFunction = async function (
       const blobFunctionContent: BlobFunctionContent = {
         blobName: context.bindingData.name,
         data: jsonDataFromBlob,
+        dateCreated: context.bindingData.properties.createdOn,
         log: context.log
       };
       const dbConfig: DbConfig = {

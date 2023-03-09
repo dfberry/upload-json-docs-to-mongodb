@@ -1,3 +1,7 @@
+# 1.3.2
+
+* Get date from blob
+
 # 1.3.1
 
 * /statue - returns env, http headers too
