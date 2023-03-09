@@ -53,9 +53,6 @@ export async function processBlob({
       statusMessage: 'No data from blob found'
     };
   }
-  if (!type || !owner || !repo || !pat) {
-    throw new Error('Missing dispatch config');
-  }
 
   // Add date column to data
   const newDate = new Date().toISOString();

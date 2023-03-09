@@ -34,9 +34,16 @@ const blobTrigger: AzureFunction = async function (
       // Get JSON from Buffer
       const jsonDataFromBlob = convertBufferToJson(myBlob);
 
-      const dispatchConfig: DispatchConfig = JSON.parse(
-        process.env.GITHUB_ACTION_DISPATCH_CONFIG_BLOB_DATA
-      );
+      const dispatchConfig: DispatchConfig = {
+        type: null,
+        owner: null,
+        repo: null,
+        pat: null
+
+      };
+      // const dispatchConfig: DispatchConfig = JSON.parse(
+      //   process.env.GITHUB_ACTION_DISPATCH_CONFIG_BLOB_DATA
+      // );
 
       const blobFunctionContent: BlobFunctionContent = {
         blobName: context.bindingData.name,

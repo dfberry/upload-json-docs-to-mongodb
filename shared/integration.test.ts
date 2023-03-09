@@ -68,52 +68,52 @@ describe('integrations', () => {
 
     spyDbData.mockReset();
   });
-  test('processBlob missing required data - pat', async () => {
-    // Arrange - use this for both mongo calls
-    // b/c 2nd call doesn't return data
-    let spyDbData = jest
-      .spyOn(databaseSDK, 'uploadArrToMongoDb')
-      .mockImplementation(uploadArrToMongoDb_Items_Mock);
+  // test('processBlob missing required data - pat', async () => {
+  //   // Arrange - use this for both mongo calls
+  //   // b/c 2nd call doesn't return data
+  //   let spyDbData = jest
+  //     .spyOn(databaseSDK, 'uploadArrToMongoDb')
+  //     .mockImplementation(uploadArrToMongoDb_Items_Mock);
 
-    // Fetch from GitHub returns 204 and no content
-    const params: MockParams = {
-      status: 204,
-      headers: null
-    };
+  //   // Fetch from GitHub returns 204 and no content
+  //   const params: MockParams = {
+  //     status: 204,
+  //     headers: null
+  //   };
 
-    fetchMock.mockResponseOnce(undefined, params);
+  //   fetchMock.mockResponseOnce(undefined, params);
 
-    const dispatchConfig: DispatchConfig = {
-      type: "fake type",
-      owner: "fake owner",
-      repo: "fake repo",
-      pat: null,
-    };
+  //   const dispatchConfig: DispatchConfig = {
+  //     type: "fake type",
+  //     owner: "fake owner",
+  //     repo: "fake repo",
+  //     pat: null,
+  //   };
 
-    const dbConfig:DbConfig = {
-      connectionString: "fake string",
-      databaseName: "fake db name",
-      collectionName: "fake collection name"
-    };
+  //   const dbConfig:DbConfig = {
+  //     connectionString: "fake string",
+  //     databaseName: "fake db name",
+  //     collectionName: "fake collection name"
+  //   };
 
-    const blobFunctionContent:BlobFunctionContent = {
-      blobName: "fake blob name",
-      data: [{"id":1,"email":"bgontier0@latimes.com"},
-      {"id":2,"email":"ahattoe1@nationalgeographic.com"},
-      {"id":3,"email":"mmaud2@psu.edu"}],
-      log: (message: string) => {}
-    };
+  //   const blobFunctionContent:BlobFunctionContent = {
+  //     blobName: "fake blob name",
+  //     data: [{"id":1,"email":"bgontier0@latimes.com"},
+  //     {"id":2,"email":"ahattoe1@nationalgeographic.com"},
+  //     {"id":3,"email":"mmaud2@psu.edu"}],
+  //     log: (message: string) => {}
+  //   };
 
-    const processBlobParams: ProcessBlobParams = {
-      ...dispatchConfig,
-      ...dbConfig,
-      ...blobFunctionContent
-    };
+  //   const processBlobParams: ProcessBlobParams = {
+  //     ...dispatchConfig,
+  //     ...dbConfig,
+  //     ...blobFunctionContent
+  //   };
    
-    await expect(processBlob(processBlobParams))
-    .rejects
-    .toThrow('Missing dispatch config');
+  //   await expect(processBlob(processBlobParams))
+  //   .rejects
+  //   .toThrow('Missing dispatch config');
 
-    spyDbData.mockReset();
-  });  
+  //   spyDbData.mockReset();
+  // });  
 });
