@@ -2,6 +2,7 @@ import { BlobFunctionContent } from './../shared/integration';
 import { AzureFunction, Context } from '@azure/functions';
 import { convertBufferToJson } from '../shared/conversions';
 import { processBlob, DispatchConfig, DbConfig } from '../shared/integration';
+import { version } from '../package.json';
 
 const blobTrigger: AzureFunction = async function (
   context: Context,
@@ -14,8 +15,11 @@ const blobTrigger: AzureFunction = async function (
       '\n Blob Size:',
       myBlob.length,
       'Bytes',
-      "created on",
-      context.bindingData.properties.createdOn
+      "\n created on",
+      context.bindingData.properties.createdOn,
+      "\n version",
+      version
+
     );
 
     // Send JSON data to MongoDB

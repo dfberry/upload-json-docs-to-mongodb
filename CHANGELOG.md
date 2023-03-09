@@ -1,3 +1,7 @@
+# 1.3.3
+
+* Add version to upload output
+
 # 1.3.2
 
 * Get date from blob
