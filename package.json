@@ -8,7 +8,8 @@
     "build:local": "tsc -p ./tsconfig.local.json",
     "azurite": "azurite --location azurite --debug azurite/debug.log",
     "start": "func start",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "dev:script": "npm run clean && npm run build:local && node ./dist/scripts/upload.js"
   },
   "dependencies": {
     "@azberry/az-simple": "^0.2.14",

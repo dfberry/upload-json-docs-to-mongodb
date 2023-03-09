@@ -1,5 +1,3 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { findInMongoDb } from "../shared/azure-cosmosdb-data-to-mongodb";
 import {
   getBlobsInContainer,
   getBlobProperties,
@@ -42,20 +40,25 @@ async function getUrls() {
     storageDirectoryName
   );
 
-  //onsole.log(`results = ${JSON.stringify(results)}`);
+  //console.log(`results = ${JSON.stringify(results)}`);
   return results;
 }
 async function processUrl(blobUrl) {
   const properties = await getBlobProperties(storageName, storageKey, blobUrl);
 
-  const customDateUploaded = properties?.system?.createdOn;
+  const customDateUploaded = "2023-03-08T08:14:00.000Z" //properties?.system?.createdOn;
   console.log(`customDateUploaded = ${customDateUploaded}`);
 
   const blobContents = await getBlobAsJson(storageName, storageKey, blobUrl);
-  console.log(`blobContents.length = ${blobContents?.length}`);
+
+  if(blobContents.error) throw Error(blobContents?.error as string)
+  if((blobContents.json as []).length === 0) throw Error("blobContents.json.length === 0")
+  const data: any[] = blobContents.json as any[];
+
+  console.log(`blobContents.length = ${data.length}`);
 
   const newBlobContents = addProperty(
-    blobContents.json,
+    data,
     "customDateUploaded",
     customDateUploaded
   );
@@ -95,37 +98,7 @@ async function main() {
   // }
 
   const list = [
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-10T0336-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-10T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-11T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-12T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-12T1634-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-13T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-14T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-15T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-16T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-17T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-18T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-19T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-20T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-21T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-22T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-23T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-24T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-25T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-26T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-27T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-28T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-29T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-30T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2022-12-31T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2023-01-01T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2023-01-02T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2023-01-03T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2023-01-04T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2023-01-05T0800-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2023-01-06T0801-azure-samples.json",
-    "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2023-01-07T0800-azure-samples.json",
+  "https://ghstoragedfb.blob.core.windows.net/github-graphql/org_repos/2023-03-08T0804-azure-samples.json"
   ];
 
   for await (const blobUrl of list) {

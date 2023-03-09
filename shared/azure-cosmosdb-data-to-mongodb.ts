@@ -106,6 +106,7 @@ export async function findRepoInMongoDbWithProjection(
     _id: 0.0
   };
 
+  // most recent entry in the collection
   const sort: Sort = {
     customDateUploaded: -1
   };
@@ -132,10 +133,10 @@ export async function findRepoInMongoDbWithProjection(
 
   // transform
   docs.map((doc) => {
-    doc.stars = doc.stargazers.totalCount;
-    doc.forks = doc.forks.totalCount;
-    doc.issues = doc.issues.totalCount;
-    doc.pr = doc.pullRequests.totalCount;
+    doc.stars = doc.stargazers?.totalCount || 0;
+    doc.forks = doc.forks?.totalCount || 0;
+    doc.issues = doc.issues?.totalCount || 0;
+    doc.pr = doc.pullRequests?.totalCount || 0;
 
     delete doc.stargazers;
     delete doc.pullRequests;

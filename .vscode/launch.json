@@ -2,6 +2,19 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "name": "Launch script",
+        "request": "launch",
+        "runtimeArgs": [
+          "run-script",
+          "dev:script"
+        ],
+        "runtimeExecutable": "npm",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "type": "node"
+      },
+      {
         "name": "Attach to Node Functions",
         "type": "node",
         "request": "attach",
