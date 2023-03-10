@@ -15,7 +15,8 @@
     "AzureWebJobs.upload.Disabled": true,
     "GITHUB_PERSONAL_ACCESS_TOKEN": "",
     "GITHUB_OWNER": "Azure-samples",
-    "GITHUB_URL": "https://api.github.com/graphql"
+    "GITHUB_URL": "https://api.github.com/graphql",
+    "STATUS_SECRET":"abc"
   },
   
 }

@@ -1,3 +1,10 @@
+# 2.0.0
+
+* /status requires STATUS_SECRET env match
+* Test for Json sort
+* Add Jest and VSCode debug for Jest
+* Add db connection in run time
+
 # 1.3.3
 
 * Add version to upload output
