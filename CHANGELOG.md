@@ -1,3 +1,7 @@
+# 2.0.1
+
+* test /status - mock db connection
+
 # 2.0.0
 
 * /status requires STATUS_SECRET env match

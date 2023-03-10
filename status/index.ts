@@ -14,7 +14,7 @@ const httpTrigger: AzureFunction = async function (
 
     if (!connectionString)
       throw new Error('AZURE_COSMOSDB_CONNECTION_STRING is missing');
-    if (!statusSecret) throw new Error('STATUS_SECRET is missing' );
+    if (!statusSecret) throw new Error('STATUS_SECRET is missing');
 
     if (req.query.secret !== statusSecret) {
       context.res = {
@@ -39,6 +39,7 @@ const httpTrigger: AzureFunction = async function (
     }
 
     context.res = {
+      status: 200,
       body: {
         version,
         env: process.env,
