@@ -6,6 +6,21 @@ import { version } from '../package.json';
 
 import { getDbConnection } from '../shared/db-connection-cache';
 
+import {
+  FunctionEnvVarParam,
+  FunctionEnvVarResult,
+  getEnvVars
+} from '../shared/env';
+
+const functionEnvVariables: FunctionEnvVarParam[] = [
+  { name: 'AZURE_COSMOSDB_CONNECTION_STRING', required: true, type: 'string' },
+  { name: 'AZURE_COSMOSDB_DATABASE_NAME', required: true, type: 'string' },
+  { name: 'AZURE_COSMOSDB_COLLECTION_NAME', required: true, type: 'string' },
+  { name: 'AZURE_STORAGE_NAME', required: true, type: 'string' },
+  { name: 'AZURE_STORAGE_KEY', required: true, type: 'string' },
+  { name: 'DB_DISCONNECT', required: false, type: 'boolean' }
+];
+
 const blobTrigger: AzureFunction = async function (
   context: Context,
   myBlob: any /*eslint-disable-line*/
@@ -22,27 +37,18 @@ const blobTrigger: AzureFunction = async function (
       '\n version',
       version
     );
+    const env: FunctionEnvVarResult = getEnvVars(functionEnvVariables);
 
     // Send JSON data to MongoDB
     if (context.bindingData.name.indexOf('.json') && myBlob.length > 0) {
-      const connectionString = process.env.AZURE_COSMOSDB_CONNECTION_STRING;
-      const databaseName = process.env.AZURE_COSMOSDB_DATABASE_NAME;
-      const collectionName = process.env.AZURE_COSMOSDB_COLLECTION_NAME;
-
-      if (!connectionString)
-        throw new Error(
-          'environment AZURE_COSMOSDB_CONNECTION_STRING missing '
-        );
-      if (!databaseName)
-        throw new Error('environment AZURE_COSMOSDB_DATABASE_NAME missing ');
-      if (!collectionName)
-        throw new Error('environment AZURE_COSMOSDB_COLLECTION_NAME missing ');
+      const connectionString = env.AZURE_COSMOSDB_CONNECTION_STRING as string;
+      const databaseName = env.AZURE_COSMOSDB_DATABASE_NAME as string;
+      const collectionName = env.AZURE_COSMOSDB_COLLECTION_NAME as string;
 
       const { isConnected, client } = await getDbConnection(
         connectionString,
         context.log
       );
-
       context.log('isConnected: ', isConnected);
 
       // Get JSON from Buffer
