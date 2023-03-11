@@ -1,43 +1,50 @@
-import {
-  StorageSharedKeyCredential,
-  BlockBlobClient,
-} from "@azure/storage-blob";
 import { BlobStorage } from '@azberry/az-simple';
-import { blob } from "stream/consumers";
 
-async function streamToBuffer(readableStream) {
+export async function streamToBuffer(readableStream) {
   return new Promise((resolve, reject) => {
     const chunks = [];
-    readableStream.on("data", (data) => {
+    readableStream.on('data', (data) => {
       chunks.push(data instanceof Buffer ? data : Buffer.from(data));
     });
-    readableStream.on("end", () => {
+    readableStream.on('end', () => {
       resolve(Buffer.concat(chunks));
     });
-    readableStream.on("error", reject);
+    readableStream.on('error', reject);
   });
 }
-export async function getBlobProperties(accountName, accountKey, blobUrl){
+export async function getBlobProperties(accountName, accountKey, blobUrl) {
   const client = new BlobStorage(accountName, accountKey);
-  const systemProperties = await client.getBlobProperties(blobUrl, {system: true, metadata: false, tags: false});
+  const systemProperties = await client.getBlobProperties(blobUrl, {
+    system: true,
+    metadata: false,
+    tags: false
+  });
   return systemProperties;
 }
-export async function getBlobsInContainer(accountName, accountKey, containerName, directoryName){
-  const delimiter = '/';                      //
-  const pageSettings = { maxPageSize: 100 };   // don't pass empty `continuationToken`
+export async function getBlobsInContainer(
+  accountName,
+  accountKey,
+  containerName,
+  directoryName
+) {
+  const delimiter = '/'; //
+  const pageSettings = { maxPageSize: 100 }; // don't pass empty `continuationToken`
   const client = new BlobStorage(accountName, accountKey);
   const results = await client.listBlobsInContainer(
     containerName,
     pageSettings,
-    directoryName + "/",
+    directoryName + '/',
     delimiter
-    );
+  );
 
-    return results;
+  return results;
 }
-export async function getBlobAsJson(accountName, accountKey, blobUrl):Promise<Record<string, unknown>>{
+export async function getBlobAsJson(
+  accountName,
+  accountKey,
+  blobUrl
+): Promise<Record<string, unknown>> {
   const client = new BlobStorage(accountName, accountKey);
   const jsonData = await client.getJsonDataFromBlob(blobUrl);
   return jsonData;
 }
-

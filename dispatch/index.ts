@@ -1,7 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { triggerDispatch } from '../shared/github';
 
-
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
@@ -20,17 +19,16 @@ const httpTrigger: AzureFunction = async function (
     const pat = process.env.GITHUB_PERSONAL_ACCESS_TOKEN_DISPATCH;
     if (!pat) throw Error('pat is missing');
 
-
-    const {statusCode} = await triggerDispatch({
+    const { statusCode } = await triggerDispatch({
       type,
       owner,
       repo,
       pat,
-      log:context.log
-    })
+      log: context.log
+    });
 
     context.res = {
-       status: statusCode
+      status: statusCode
     };
   } catch (error: unknown) {
     context.log(error);

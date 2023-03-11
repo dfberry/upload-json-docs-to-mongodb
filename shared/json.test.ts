@@ -1,32 +1,29 @@
-import { describe, expect, test, beforeEach } from "@jest/globals";
-import { sortJson } from "./json";
+import { describe, expect, test } from '@jest/globals';
+import { sortJson } from './json';
 
-describe("JSON", () => {
+describe('JSON', () => {
+  //beforeEach(() => {});
 
-  beforeEach(() => {
-  });
+  //afterAll(() => {});
 
-  afterAll(() => {
-  });
-
-  test("Sort JSON", async () => {
+  test('Sort JSON', async () => {
     const jsonRaw = {
-      "John": "3",
-      "Peter": "5",
-      "Amy": "2"
-    }
+      John: '3',
+      Peter: '5',
+      Amy: '2'
+    };
     const jsonCorrect = {
-      "Amy": "2",
-      "John": "3",
-      "Peter": "5"
-    }
+      Amy: '2',
+      John: '3',
+      Peter: '5'
+    };
 
     const sortedJson = sortJson(jsonRaw);
     expect(JSON.stringify(sortedJson)).toEqual(JSON.stringify(jsonCorrect));
     expect(JSON.stringify(sortedJson)).not.toEqual(JSON.stringify(jsonRaw));
   });
 
-  test("Sort empty JSON", async () => {
+  test('Sort empty JSON', async () => {
     const jsonRaw = {};
 
     const sortedJson = sortJson(jsonRaw);

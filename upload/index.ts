@@ -1,12 +1,14 @@
 import { BlobFunctionContent } from './../shared/integration';
 import { AzureFunction, Context } from '@azure/functions';
 import { convertBufferToJson } from '../shared/conversions';
-import { processBlob, DispatchConfig, DbConfig } from '../shared/integration';
+import { DbConfig, DispatchConfig, processBlob } from '../shared/integration';
 import { version } from '../package.json';
+
+import { getDbConnection } from '../shared/db-connection-cache';
 
 const blobTrigger: AzureFunction = async function (
   context: Context,
-  myBlob: any
+  myBlob: any /*eslint-disable-line*/
 ): Promise<void> {
   try {
     context.log(
@@ -15,11 +17,10 @@ const blobTrigger: AzureFunction = async function (
       '\n Blob Size:',
       myBlob.length,
       'Bytes',
-      "\n created on",
+      '\n created on',
       context.bindingData.properties.createdOn,
-      "\n version",
+      '\n version',
       version
-
     );
 
     // Send JSON data to MongoDB
@@ -37,6 +38,13 @@ const blobTrigger: AzureFunction = async function (
       if (!collectionName)
         throw new Error('environment AZURE_COSMOSDB_COLLECTION_NAME missing ');
 
+      const { isConnected, client } = await getDbConnection(
+        connectionString,
+        context.log
+      );
+
+      context.log('isConnected: ', isConnected);
+
       // Get JSON from Buffer
       const jsonDataFromBlob = convertBufferToJson(myBlob);
 
@@ -45,7 +53,6 @@ const blobTrigger: AzureFunction = async function (
         owner: null,
         repo: null,
         pat: null
-
       };
       // const dispatchConfig: DispatchConfig = JSON.parse(
       //   process.env.GITHUB_ACTION_DISPATCH_CONFIG_BLOB_DATA
@@ -58,18 +65,25 @@ const blobTrigger: AzureFunction = async function (
         log: context.log
       };
       const dbConfig: DbConfig = {
-        connectionString,
         databaseName,
-        collectionName
+        collectionName,
+        client
       };
       const { statusCode } = await processBlob({
         ...dispatchConfig,
         ...blobFunctionContent,
         ...dbConfig
       });
-      context.log(`Blob trigger end = GitHub action dispatch result: ${statusCode}`);
+      context.log(
+        `Blob trigger end = GitHub action dispatch result: ${statusCode}`
+      );
+
+      // Close the connection to the database if the DB_DISCONNECT environment variable is set to true
+      if (process.env.DB_DISCONNECT === 'true' && isConnected) {
+        await client.close();
+      }
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     context.log(error);
     context.res = {
       status: 500 /* Defaults to 200 */,

@@ -1,20 +1,20 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import {
   defaultBranch,
-  IGetDefaultBranchInRepoQueryVariables,
   IGetDefaultBranchInRepoQuery,
-  defaultBranchRequiredParameters,
   lastCommit,
   lastCommitRequiredParameters,
-  IGetLastCommitInRepoQuery,
-  IGetLastCommitInRepoQueryVariables,
   lastIssue,
   lastIssueRequiredParameters,
-  IGetLastIssueInRepoQuery,
-  lastPrRequiredParameters,
   lastPr,
-  IGetLastPrInRepoQuery
+  lastPrRequiredParameters
 } from '@diberry/github-magic';
+
+/**
+ * Connects to GitHub through github-magic and returns the last commit in a repo
+ * @param context
+ * @param req
+ */
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
@@ -114,13 +114,13 @@ const httpTrigger: AzureFunction = async function (
             : {}
       }
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     context.log(error);
-  context.res = {
-    status: 500 /* Defaults to 200 */,
-    body: error
-  };
-}
+    context.res = {
+      status: 500 /* Defaults to 200 */,
+      body: error
+    };
+  }
 };
 
 export default httpTrigger;
