@@ -1,3 +1,10 @@
+# 3.0.0
+
+* global db connection
+* ESLint 
+* types
+* tests
+
 # 2.0.1
 
 * test /status - mock db connection
