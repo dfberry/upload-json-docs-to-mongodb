@@ -32,7 +32,10 @@ const httpTrigger: AzureFunction = async function (
     const repoName = req.query.name || (req.body && req.body.name);
     if (!repoName) throw Error('No repo name provided');
 
-    const env: FunctionEnvVarResult = getEnvVars(functionEnvVariables);
+    const env: FunctionEnvVarResult = getEnvVars(
+      functionEnvVariables,
+      context.log
+    );
 
     const { isConnected, client } = await getDbConnection(
       env.AZURE_COSMOSDB_CONNECTION_STRING as string,

@@ -37,7 +37,10 @@ const blobTrigger: AzureFunction = async function (
       '\n version',
       version
     );
-    const env: FunctionEnvVarResult = getEnvVars(functionEnvVariables);
+    const env: FunctionEnvVarResult = getEnvVars(
+      functionEnvVariables,
+      context.log
+    );
 
     // Send JSON data to MongoDB
     if (context.bindingData.name.indexOf('.json') && myBlob.length > 0) {

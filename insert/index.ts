@@ -28,7 +28,10 @@ const httpTrigger: AzureFunction = async function (
   context.log('insert HTTP trigger function processed a request.');
 
   try {
-    const env: FunctionEnvVarResult = getEnvVars(functionEnvVariables);
+    const env: FunctionEnvVarResult = getEnvVars(
+      functionEnvVariables,
+      context.log
+    );
 
     const blobUrl = req.query.url || (req.body && req.body.url);
     if (!blobUrl) throw Error('Missing blobUrl');

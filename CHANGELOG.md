@@ -1,3 +1,7 @@
+# 3.0.1
+
+* fixes for config/env
+
 # 3.0.0
 
 * global db connection

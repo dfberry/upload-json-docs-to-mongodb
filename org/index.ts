@@ -25,7 +25,10 @@ const httpTrigger: AzureFunction = async function (
   try {
     context.log('HTTP trigger org function processed a request.');
 
-    const env: FunctionEnvVarResult = getEnvVars(functionEnvVariables);
+    const env: FunctionEnvVarResult = getEnvVars(
+      functionEnvVariables,
+      context.log
+    );
 
     const { isConnected, client } = await getDbConnection(
       env.AZURE_COSMOSDB_CONNECTION_STRING as string,

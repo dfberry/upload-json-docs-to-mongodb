@@ -41,8 +41,10 @@ describe('env', () => {
       { name: keyName, required: true, type: 'string' }
     ];
 
+    const fakeLogger = jest.fn();
+
     // Get only env vars the function needs, nothing more
-    const envVars = getEnvVars(functionEnvVariables);
+    const envVars = getEnvVars(functionEnvVariables, fakeLogger);
 
     expect(envVars).toBeDefined();
     expect(Object.keys(envVars).length).toEqual(functionEnvVariables.length);

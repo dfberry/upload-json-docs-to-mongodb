@@ -1,11 +1,13 @@
 import { MongoClient } from 'mongodb';
 
-let client: MongoClient = null;
-let isConnected = false;
-
 export type DbConnection = {
   client: MongoClient | undefined;
   isConnected: boolean;
+};
+
+const currentDbConnection: DbConnection = {
+  client: null,
+  isConnected: false
 };
 
 export async function getDbConnection(
@@ -13,14 +15,12 @@ export async function getDbConnection(
   log: (message: string) => void
 ): Promise<DbConnection> {
   try {
-    if (!isConnected && !!connectionString) {
-      client = await MongoClient.connect(connectionString);
-      isConnected = true;
-      return {
-        client,
-        isConnected
-      };
+    if (!currentDbConnection.isConnected && !!connectionString) {
+      currentDbConnection.client = await MongoClient.connect(connectionString);
+      currentDbConnection.isConnected = true;
     }
+    log(`DB Connection: ${currentDbConnection.isConnected}`);
+    return currentDbConnection;
   } catch (error: unknown) {
     if (error instanceof Error) {
       log(`DB Connection error: ${error?.message}`);

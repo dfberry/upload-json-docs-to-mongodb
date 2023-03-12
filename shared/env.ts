@@ -17,8 +17,11 @@ export function getEnv(obj, key) {
  * @param keys
  * @returns
  */
-export function getEnvVars(keys: FunctionEnvVarParam[]): FunctionEnvVarResult {
-  const globalValues: FunctionEnvVarResult = getConfigKeys();
+export function getEnvVars(
+  keys: FunctionEnvVarParam[],
+  log: () => void
+): FunctionEnvVarResult {
+  const globalValues: FunctionEnvVarResult = getConfigKeys(log);
   const functionValues: FunctionEnvVarResult = {};
 
   //console.log(globalValues);

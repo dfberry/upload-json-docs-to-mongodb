@@ -26,7 +26,10 @@ const httpTrigger: AzureFunction = async function (
   context.log('HTTP trigger status function processed a request.');
 
   try {
-    const env: FunctionEnvVarResult = getEnvVars(functionEnvVariables);
+    const env: FunctionEnvVarResult = getEnvVars(
+      functionEnvVariables,
+      context.log
+    );
 
     // secret's don't match
     if (
