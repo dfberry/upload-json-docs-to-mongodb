@@ -1,3 +1,7 @@
+# 4.0.0
+
+* /debug - requires admin code
+
 # 3.0.1
 
 * fixes for config/env
