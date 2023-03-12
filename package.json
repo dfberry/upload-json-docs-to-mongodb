@@ -1,6 +1,6 @@
 {
   "name": "upload-json-docs-to-mongodb",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "description": "",
   "scripts": {
     "clean": "rm -rf ./dist && rm -rf ./azurite && rm -rf ./shared/generated",
@@ -11,6 +11,8 @@
     "azurite": "azurite --location azurite --debug azurite/debug.log",
     "start": "func start",
     "test": "jest --detectOpenHandles",
+    "test:e2e:local": "concurrently -c \"auto\" \"npm run start\" \"jest --config=jest.config.e2e.js --detectOpenHandles\" ",
+    "test:e2e:local2": "jest --config=jest.config.e2e.js",
     "dev:script": "npm run clean && npm run build:local && node ./dist/scripts/upload.js"
   },
   "dependencies": {

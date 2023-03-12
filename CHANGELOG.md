@@ -1,3 +1,7 @@
+# 4.1.0
+
+* First crack at e2e with /debug
+
 # 4.0.2
 
 * More details in /debug

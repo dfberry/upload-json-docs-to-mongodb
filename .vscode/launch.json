@@ -28,6 +28,19 @@
         "type": "node"
       },
       {
+        "name": "Launch t-e2e",
+        "request": "launch",
+        "runtimeArgs": [
+          "run-script",
+          "test:e2e:local2"
+        ],
+        "runtimeExecutable": "npm",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "type": "node"
+      },
+      {
         "name": "Attach to Node Functions",
         "type": "node",
         "request": "attach",

@@ -1,5 +1,8 @@
 {
   "IsEncrypted": false,
+  "Host": {
+    "CORS": "*"
+  },
   "Values": {
     "UseDevelopmentStorage":false,
     "AzureWebJobsStorage": "",
@@ -17,7 +20,7 @@
     "AZURE_STORAGE_CONTAINER_NAME":"github-graphql",
     "AZURE_STORAGE_CONTAINER_NAME_USER_REPOS":"github-graphql/users",
     "AZURE_STORAGE_DIRECTORY_NAME":"org_repos",
-
+    "AZURE_STORAGE_TEST_BLOB_URL":"https://ghstoragedfb.blob.core.windows.net/test/simple-json-3.json",
 
     "GITHUB_PERSONAL_ACCESS_TOKEN": "",
     "GITHUB_OWNER": "Azure-samples",
@@ -27,7 +30,9 @@
     "STATUS_SECRET":"abc",
 
     "NODE_ENV": "development",
-    "DB_DISCONNECT":"false"
+    "DB_DISCONNECT":"false",
+    "BASE_URL_LIVE":"https://YOUR_FN_RESOURCE_NAME.azurewebsites.net/api",
+    "TEST_FUNCTION_ADMIN_KEY":"YOUR_TEST_FUNCTION_ADMIN_KEY"
     
   },
   
