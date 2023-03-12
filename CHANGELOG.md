@@ -1,6 +1,7 @@
 # 4.1.0
 
 * First crack at e2e with /debug
+    * 2 separate jest files - unit and e2e
 
 # 4.0.2
 
