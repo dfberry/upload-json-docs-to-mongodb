@@ -1,3 +1,11 @@
+# 4.0.2
+
+* More details in /debug
+
+# 4.0.1
+
+* Update local.settings.sample.json
+
 # 4.0.0
 
 * /debug - requires admin code

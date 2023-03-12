@@ -16,6 +16,7 @@ export async function getDbConnection(
 ): Promise<DbConnection> {
   try {
     if (!currentDbConnection.isConnected && !!connectionString) {
+      log(`DB Connection string: ${connectionString}`);
       currentDbConnection.client = await MongoClient.connect(connectionString);
       currentDbConnection.isConnected = true;
     }

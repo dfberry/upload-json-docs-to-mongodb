@@ -1,3 +1,4 @@
+import { sortJsonObjectOfProperties } from './json';
 export const CONFIG = {
   AZURE_COSMOSDB_CONNECTION_STRING:
     process.env.AZURE_COSMOSDB_CONNECTION_STRING,
@@ -38,6 +39,10 @@ function checkConfig(log) {
 // GLOBAL: Errors in global space - not in function
 
 export function getConfigKeys(log: any): typeof CONFIG {
+  if (process.env.NODE_ENV !== 'production') {
+    log(sortJsonObjectOfProperties(process.env));
+  }
+
   checkConfig(log);
   return CONFIG;
 }

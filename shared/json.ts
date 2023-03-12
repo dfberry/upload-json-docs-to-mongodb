@@ -19,3 +19,13 @@ export const prettyJson = (json) => {
     return '<br>' + '&nbsp;'.repeat(p1.length);
   });
 };
+export const sortJsonArray = (arrJson, propertyToSortBy) => {
+  arrJson.sort(function (a, b) {
+    return a[propertyToSortBy] - b[propertyToSortBy];
+  });
+};
+export const sortJsonObjectOfProperties = (o) => {
+  return Object.keys(o)
+    .sort()
+    .reduce((r, k) => ((r[k] = o[k]), r), {});
+};

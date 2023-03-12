@@ -13,6 +13,9 @@ export async function streamToBuffer(readableStream) {
   });
 }
 export async function getBlobProperties(accountName, accountKey, blobUrl) {
+  if (!accountKey) throw new Error('Missing accountKey');
+  if (!accountName) throw new Error('Missing accountName');
+
   const client = new BlobStorage(accountName, accountKey);
   const systemProperties = await client.getBlobProperties(blobUrl, {
     system: true,
