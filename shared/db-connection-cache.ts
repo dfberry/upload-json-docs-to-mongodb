@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-let client = null;
+let client: MongoClient = null;
 let isConnected = false;
 
 export type DbConnection = {
@@ -14,16 +14,17 @@ export async function getDbConnection(
 ): Promise<DbConnection> {
   try {
     if (!isConnected && !!connectionString) {
-      client = new MongoClient(connectionString);
-      await client.connect();
+      client = await MongoClient.connect(connectionString);
       isConnected = true;
       return {
         client,
         isConnected
       };
     }
-  } catch (error) {
-    log(`DB Connection error: ${error.message}`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      log(`DB Connection error: ${error?.message}`);
+    }
     throw error;
   }
 }

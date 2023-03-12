@@ -1,15 +1,13 @@
 import { uploadArrToMongoDb } from './azure-cosmosdb-data-to-mongodb';
 import { triggerDispatch } from './github';
-import {
-  getBlobAsJson,
-  getBlobProperties,
-} from "../shared/azure-storage";
+import { getBlobAsJson, getBlobProperties } from '../shared/azure-storage';
+import { MongoClient } from 'mongodb';
 
 export type BlobFunctionContent = {
   blobName: string;
   dateCreated: string;
-  data: any[];
-  log: (message: string) => void;
+  data: { [key: string]: unknown }[];
+  log: (_: string) => void;
 };
 
 export type DispatchConfig = {
@@ -20,9 +18,10 @@ export type DispatchConfig = {
 };
 
 export type DbConfig = {
-  connectionString: string;
   databaseName: string;
-  collectionName: string;
+  collectionName?: string;
+  client?: MongoClient | undefined;
+  connectionString?: string;
 };
 
 export type ProcessBlobParams = BlobFunctionContent & DbConfig & DispatchConfig;
@@ -32,18 +31,18 @@ export type ProcessBlobResult = {
 };
 export async function processBlobUrl({
   blobUrl,
-  connectionString,
+  client,
   databaseName,
   collectionName,
-  storageName, 
-  storageKey, 
+  storageName,
+  storageKey,
   log
-}): Promise<any> {
+}): Promise<ProcessBlobResult> {
   if (!blobUrl) {
     throw new Error('Missing blobUrl or data');
   }
-  if (!connectionString || !databaseName || !collectionName) {
-    throw new Error('Missing connectionString, databaseName or collectionName');
+  if (!client || !databaseName || !collectionName) {
+    throw new Error('Missing client, databaseName or collectionName');
   }
   if (!log) {
     throw new Error('Missing log function');
@@ -51,9 +50,10 @@ export async function processBlobUrl({
 
   const blobContents = await getBlobAsJson(storageName, storageKey, blobUrl);
 
-  if(blobContents.error) throw Error(blobContents?.error as string)
-  if((blobContents.json as []).length === 0) throw Error("blobContents.json.length === 0")
-  const data: any[] = blobContents.json as any[];
+  if (blobContents.error) throw Error(blobContents?.error as string);
+  if ((blobContents.json as []).length === 0)
+    throw Error('blobContents.json.length === 0');
+  const data = blobContents.json as { [key: string]: unknown }[];
   const properties = await getBlobProperties(storageName, storageKey, blobUrl);
   const dateCreated = properties?.system?.createdOn as string;
 
@@ -63,15 +63,15 @@ export async function processBlobUrl({
     blobName,
     data,
     dateCreated,
-    connectionString,
+    client,
     databaseName,
     collectionName,
-    type:null,
-    owner:null,
-    repo:null,
-    pat:null,
+    type: null,
+    owner: null,
+    repo: null,
+    pat: null,
     log
-  })
+  });
   return result;
 }
 
@@ -79,24 +79,22 @@ export async function processBlob({
   blobName,
   data,
   dateCreated,
-  connectionString,
   databaseName,
   collectionName,
   type,
   owner,
   repo,
   pat,
+  client,
   log
 }: ProcessBlobParams): Promise<ProcessBlobResult> {
   if (!blobName) {
     throw new Error('Missing blobName or data');
   }
-  if (!connectionString || !databaseName || !collectionName) {
+  if (!client || !databaseName || !collectionName) {
     throw new Error('Missing connectionString, databaseName or collectionName');
   }
-  if (!log) {
-    throw new Error('Missing log function');
-  }
+
   if (!data || data.length === 0) {
     return {
       statusCode: 404, // Not Found,
@@ -105,13 +103,12 @@ export async function processBlob({
   }
 
   data.map((doc) => {
-    // @ts-ignore
     doc['customDateUploaded'] = dateCreated;
   });
 
   // insert into mongoDB
   const result = await uploadArrToMongoDb(
-    connectionString,
+    client,
     databaseName,
     collectionName,
     data
@@ -123,12 +120,9 @@ export async function processBlob({
   };
 
   // insert count to mongoDB
-  await uploadArrToMongoDb(
-    connectionString,
-    databaseName,
-    collectionName + '-count',
-    [updatedCountDoc]
-  );
+  await uploadArrToMongoDb(client, databaseName, collectionName + '-count', [
+    updatedCountDoc
+  ]);
   log(
     `Blob trigger result ${blobName} items ${JSON.stringify(
       result?.insertedCount
@@ -137,7 +131,6 @@ export async function processBlob({
 
   // trigger Next.js rebuild
   if (pat && type && owner && repo) {
-
     const { statusCode } = await triggerDispatch({
       log,
       type,
@@ -147,5 +140,5 @@ export async function processBlob({
     });
     return { statusCode };
   }
-  return { statusCode: 201}
+  return { statusCode: 201 };
 }

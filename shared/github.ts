@@ -5,7 +5,7 @@ export type TriggerDispatchParams = {
   owner: string;
   repo: string;
   pat: string;
-  log: any;
+  log: (_: string) => void;
 };
 
 export type TriggerDispatchResult = {
@@ -18,7 +18,7 @@ export async function triggerDispatch({
   repo,
   pat,
   log
-}: TriggerDispatchParams):Promise<TriggerDispatchResult> {
+}: TriggerDispatchParams): Promise<TriggerDispatchResult> {
   if (!type) throw Error('dispatchType is missing');
   if (!owner) throw Error('owner is missing');
   if (!repo) throw Error('repo is missing');

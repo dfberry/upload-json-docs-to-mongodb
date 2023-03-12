@@ -9,8 +9,8 @@ export const sortJson = (json) => {
 
   if (typeof json !== 'object') return {};
 
-  // @ts-ignore
-  return Object.entries(json).sort(Intl.Collator().compare)
+  return Object.entries(json)
+    .sort((a, b) => +(a > b) || -(b > a))
     .reduce((o, [k, v]) => ((o[k] = v), o), {});
 };
 
