@@ -5,9 +5,8 @@ name: Not main - build/test
 
 on:
   push:
-    branches:
-      - '*'
-      - !main
+    branches-ignore:
+      - main
   workflow_dispatch:
 
 env:
